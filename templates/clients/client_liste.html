@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Clients · Gestion de rendez-vous{% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h2 mb-1">Clients</h1>
+      <p class="text-body-secondary mb-0">Gérez les coordonnées de vos clients.</p>
+    </div>
+    <a class="btn btn-primary" href="{% url 'client_creer' %}">Ajouter un client</a>
+  </div>
+
+  {% if clients %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Téléphone</th>
+            <th scope="col">E-mail</th>
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for client in clients %}
+            <tr>
+              <td>{{ client.prenom }} {{ client.nom }}</td>
+              <td>{{ client.telephone|default:"—" }}</td>
+              <td>{{ client.email|default:"—" }}</td>
+              <td class="text-end text-nowrap">
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'client_modifier' client.pk %}">Modifier</a>
+                <a class="btn btn-sm btn-outline-danger" href="{% url 'client_supprimer' client.pk %}">Supprimer</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-light border" role="status">Aucun client pour le moment.</div>
+  {% endif %}
+{% endblock %}
