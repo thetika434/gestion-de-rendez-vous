@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Supprimer un client · Gestion de rendez-vous{% endblock %}
+
+{% block content %}
+  <div class="card border-danger">
+    <div class="card-body">
+      <h1 class="h3">Supprimer le client</h1>
+      <p>Confirmez-vous la suppression de <strong>{{ client }}</strong> ? Cette action supprimera aussi ses rendez-vous associés.</p>
+      <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Confirmer la suppression</button>
+        <a class="btn btn-outline-secondary" href="{% url 'client_liste' %}">Annuler</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}
