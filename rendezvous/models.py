@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -34,6 +35,28 @@ class RendezVous(models.Model):
 
     class Meta:
         ordering = ["date", "heure"]
+
+    def clean(self):
+        super().clean()
+        if (
+            self.statut == self.Statut.ANNULE
+            or self.client_id is None
+            or self.date is None
+            or self.heure is None
+        ):
+            return
+
+        rendez_vous = RendezVous.objects.filter(
+            client_id=self.client_id,
+            date=self.date,
+            heure=self.heure,
+        ).exclude(statut=self.Statut.ANNULE)
+        if self.pk is not None:
+            rendez_vous = rendez_vous.exclude(pk=self.pk)
+        if rendez_vous.exists():
+            raise ValidationError(
+                {"heure": "Ce client a déjà un rendez-vous à cette date et à cette heure."}
+            )
 
     def __str__(self):
         return f"{self.client} - {self.date} à {self.heure}"
