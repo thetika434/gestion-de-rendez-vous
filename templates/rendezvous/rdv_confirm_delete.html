@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Supprimer le rendez-vous{% endblock %}
+
+{% block content %}
+  <h1 class="mb-3">Supprimer le rendez-vous</h1>
+  <p>Confirmez-vous la suppression du rendez-vous de <strong>{{ rendezvous.client }}</strong> du {{ rendezvous.date|date:"d/m/Y" }} à {{ rendezvous.heure|time:"H:i" }} ?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Confirmer la suppression</button>
+    <a class="btn btn-secondary" href="{% url 'rdv_liste' %}">Annuler</a>
+  </form>
+{% endblock %}

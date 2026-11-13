@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{% if rendezvous %}Modifier le rendez-vous{% else %}Nouveau rendez-vous{% endif %}{% endblock %}
+
+{% block content %}
+  <h1 class="mb-3">{% if rendezvous %}Modifier le rendez-vous{% else %}Nouveau rendez-vous{% endif %}</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger" role="alert">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    {% for field in form %}
+      <div class="mb-3">
+        {{ field.label_tag }}
+        {{ field }}
+        {% for error in field.errors %}
+          <div class="text-danger" role="alert">{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+
+    <button class="btn btn-primary" type="submit">Enregistrer</button>
+    <a class="btn btn-secondary" href="{% url 'rdv_liste' %}">Annuler</a>
+  </form>
+{% endblock %}
